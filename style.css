@@ -1,0 +1,44 @@
+h1, h2, p, div, body, button {
+    user-select: none;
+}
+
+canvas {
+    position: absolute; 
+    left: 0; 
+    top: 0;
+}
+
+button {
+    position: relative;
+}
+
+.text {
+    display: inline;
+}
+
+.motorOff {
+    color: green;
+}
+
+.motorOn {
+    color: red;
+}
+
+.motorOnButton {
+    width: 40%;
+    height: 100%;
+    background-color: red;
+    user-select: none;
+}
+
+.motorOffButton {
+    width: 40%;
+    height: 100%;
+    background-color: green;
+}
+
+.buttondiv {
+    text-align: center;
+    width: 100%;
+    height: 20%;
+}
