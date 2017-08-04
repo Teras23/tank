@@ -12,7 +12,7 @@ function DrawLine(mouseX, mouseY) {
     let canvas = document.getElementById("canvas");
     let ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    if(gamepad != null && pressX != null && pressY != null) {
+    if(pressX != null && pressY != null) {
         ctx.beginPath();
         ctx.moveTo(pressX, pressY);
         ctx.lineTo(mouseX, mouseY);
@@ -39,11 +39,11 @@ function controllerData(axisv, axish) {
     let leftpower = (ver + hor) / total || 0;
     let rightpower = (ver - hor) / total || 0;
 
-    if(Math.abs(leftpower < 0.05)) {
+    if(Math.abs(Math.abs(leftpower) < 0.05)) {
         leftpower = 0;
     }
 
-    if(Math.abs(rightpower < 0.05)) {
+    if(Math.abs(Math.abs(rightpower) < 0.05)) {
         rightpower = 0;
     }
 
@@ -94,8 +94,10 @@ function loop(time) {
         document.getElementById("mouseX").innerHTML = mouseX;
         document.getElementById("mouseY").innerHTML = mouseY;
 
+        DrawLine(mouseX, mouseY);
+
         document.getElementById("controller").innerHTML = "Using mouse";
-        data = controllerData((mouseY - pressY) / minRad, (mouseX - pressX) / minRad);
+        data = controllerData((pressY - mouseY) / minRad, (pressX - mouseX) / minRad);
     }
     else {
         document.getElementById("controller").innerHTML = "Waiting for controller";
@@ -168,7 +170,6 @@ document.addEventListener("mousedown", function(event) {
 document.addEventListener("mouseup", function(event) {
     pressX = null;
     pressY = null;
-    DrawLine(0, 0);
     mouseMode = false;
 });
 
@@ -180,10 +181,6 @@ document.addEventListener("touchmove", function(event) {
     canvas.width = document.body.clientWidth;
     canvas.height = document.body.clientHeight;
     minRad = Math.min(canvas.height, canvas.height) / 4;
-
-    if(pressX != null) {
-        DrawLine(mouseX, mouseY);
-    }
 });
 
 document.addEventListener("touchstart", function(event) {
@@ -195,7 +192,6 @@ document.addEventListener("touchstart", function(event) {
 document.addEventListener("touchend", function(event) {
     pressX = null;
     pressY = null;
-    DrawLine(0, 0);
     mouseMode = false;
 });
 
