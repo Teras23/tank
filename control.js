@@ -69,8 +69,8 @@ function keyboardData(w, a, s, d) {
 
     let data = {
         "moveData": true,
-        "left": rightpower,
-        "right": leftpower
+        "left": hor,
+        "right": ver
     };
 
     return data;

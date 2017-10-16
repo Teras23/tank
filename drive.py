@@ -82,6 +82,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
             self.write_message("off")
     
     def on_message(self, message):
+        print(message)
         jsonmsg = json.loads(message)
         if jsonmsg["moveData"]:
             leftspeed = jsonmsg["left"]
