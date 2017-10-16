@@ -32,8 +32,8 @@ class Motor():
             return
 
         try:
-            pwm1.ChangeDutyCycle(pwm1bal+x/8+y/8) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
-            pwm2.ChangeDutyCycle(pwm2bal-x/8+y/8) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.pwm1.ChangeDutyCycle(pwm1bal+x/8+y/8) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.pwm2.ChangeDutyCycle(pwm2bal-x/8+y/8) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
         except RuntimeError as e:
             print(e)
             self.Clean()
@@ -41,8 +41,8 @@ class Motor():
 
     def Reset(self):
         try:
-            pwm1.ChangeDutyCycle(pwm1bal) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
-            pwm2.ChangeDutyCycle(pwm2bal) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.pwm1.ChangeDutyCycle(pwm1bal) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.pwm2.ChangeDutyCycle(pwm2bal) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
             print("Motor outputs reset")
         except RuntimeError as e:
             print(e)
@@ -55,8 +55,8 @@ class Motor():
 
     def TurnOn(self):
         try:
-            pwm1.ChangeDutyCycle(pwm1bal) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
-            pwm2.ChangeDutyCycle(pwm2bal) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.pwm1.ChangeDutyCycle(pwm1bal) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.pwm2.ChangeDutyCycle(pwm2bal) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
             self.running = True
             print("Motor turned on")
         except RuntimeError as e:
