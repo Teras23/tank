@@ -32,8 +32,8 @@ class Motor():
             return
 
         try:
-            self.left.ChangeDutyCycle(pwm1bal+x/8+y/8) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
-            self.right.ChangeDutyCycle(pwm2bal-x/8+y/8) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.left.ChangeDutyCycle(self.pwm1bal+x/8+y/8) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.right.ChangeDutyCycle(self.pwm2bal-x/8+y/8) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
         except RuntimeError as e:
             print(e)
             self.Clean()
@@ -41,8 +41,8 @@ class Motor():
 
     def Reset(self):
         try:
-            self.left.ChangeDutyCycle(pwm1bal) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
-            self.right.ChangeDutyCycle(pwm2bal) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.left.ChangeDutyCycle(self.pwm1bal) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.right.ChangeDutyCycle(self.pwm2bal) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
             print("Motor outputs reset")
         except RuntimeError as e:
             print(e)
@@ -55,8 +55,8 @@ class Motor():
 
     def TurnOn(self):
         try:
-            self.left.ChangeDutyCycle(pwm1bal) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
-            self.right.ChangeDutyCycle(pwm2bal) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.left.ChangeDutyCycle(self.pwm1bal) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.right.ChangeDutyCycle(self.pwm2bal) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
             self.running = True
             print("Motor turned on")
         except RuntimeError as e:
