@@ -32,8 +32,8 @@ class Motor():
             return
 
         try:
-            self.left.ChangeDutyCycle(self.pwm1bal+x/8+y/8) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
-            self.right.ChangeDutyCycle(self.pwm2bal-x/8+y/8) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.left.ChangeDutyCycle(self.pwm1bal+left/8+right/8) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            self.right.ChangeDutyCycle(self.pwm2bal-left/8+right/8) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
         except RuntimeError as e:
             print(e)
             self.Clean()

@@ -63,13 +63,8 @@ function keyboardData(w, a, s, d) {
     let hor = a + d;
     let ver = w + s;
 
-    let total = Math.abs(hor) + Math.abs(ver);
-
-    let leftpower = (ver + hor)/ total || 0;
-    let rightpower = (ver - hor) / total || 0;
-
-    document.getElementById("axis0").innerHTML = leftpower;
-    document.getElementById("axis1").innerHTML = rightpower;
+    document.getElementById("axis0").innerHTML = hor;
+    document.getElementById("axis1").innerHTML = ver;
     document.getElementById("total").innerHTML = total;
 
     let data = {
