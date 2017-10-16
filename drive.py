@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import CHIP_IO.SOFTPWM as SPWM
+import RPi.GPIO as GPIO #Sisend/valjund viikude paketi lisamine
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
@@ -12,41 +12,28 @@ motor = None
 
 class Motor():
 
-    left_forward = None
-    right_forward = None
-    left_backward = None
-    right_backward = None
+    left = None
+    right = None
     running = False
 
-    def __init__(self, left_forward, right_forward, left_backward, right_backward):
-        self.left_forward = left_forward
-        self.right_forward = right_forward
-        self.left_backward = left_backward
-        self.right_backward = right_backward
+    def __init__(self, left, right):
+        self.pwm1bal = 7.0 #esimese mootori nullpunkt, muuta vastavalt oma mootori andmetele
+        self.pwm2bal = 7.0 #teise mootori nullpunkt, muuta vastavalt oma mootori andmetele
+
+        GPIO.setwarnings(False) #Hoiatuste valjalulitamine
+        GPIO.setmode(GPIO.BOARD) #Viikude nummerduse valimine jarjekorra alusel
+        GPIO.setup(left, GPIO.OUT) #Viikude 11 ja 12 valjundiks seadmine
+        GPIO.setup(right, GPIO.OUT)
+        self.left = GPIO.PWM(left, 50)
+        self.right = GPIO.PWM(right, 50)
 
     def Drive(self, left, right):
         if not self.running:
             return
-        leftf = 0
-        leftb = 0
-        rightf = 0
-        rightb = 0
-
-        if left >= 0:
-            leftf = left
-        else:
-            leftb = abs(left)
-
-        if right >= 0:
-            rightf = right
-        else:
-            rightb = abs(right)
 
         try:
-            SPWM.set_duty_cycle(self.left_forward, leftf * 100)
-            SPWM.set_duty_cycle(self.right_forward, rightf * 100)
-            SPWM.set_duty_cycle(self.left_backward, leftb * 100)
-            SPWM.set_duty_cycle(self.right_backward, rightb * 100)
+            pwm1.ChangeDutyCycle(pwm1bal+x/8+y/8) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            pwm2.ChangeDutyCycle(pwm2bal-x/8+y/8) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
         except RuntimeError as e:
             print(e)
             self.Clean()
@@ -54,25 +41,22 @@ class Motor():
 
     def Reset(self):
         try:
-            SPWM.set_duty_cycle(self.left_forward, 0)
-            SPWM.set_duty_cycle(self.right_forward, 0)
-            SPWM.set_duty_cycle(self.left_backward, 0)
-            SPWM.set_duty_cycle(self.right_backward, 0)
+            pwm1.ChangeDutyCycle(pwm1bal) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            pwm2.ChangeDutyCycle(pwm2bal) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
             print("Motor outputs reset")
         except RuntimeError as e:
             print(e)
             self.Clean()
     
     def Clean(self):
-        SPWM.cleanup()
+        #SPWM.cleanup()
+
         print("Motor outputs cleaned")
 
     def TurnOn(self):
         try:
-            SPWM.start(self.left_forward, 0)
-            SPWM.start(self.right_forward, 0)
-            SPWM.start(self.left_backward, 0)
-            SPWM.start(self.right_backward, 0)
+            pwm1.ChangeDutyCycle(pwm1bal) #Parempoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
+            pwm2.ChangeDutyCycle(pwm2bal) #Vasakpoolne mootor kiiruse seadistamine vastavalt nutiseadme x ja y vaartustele
             self.running = True
             print("Motor turned on")
         except RuntimeError as e:
@@ -127,7 +111,7 @@ def exit():
 
 atexit.register(exit)
 
-motor = Motor("XIO-P1", "XIO-P2", "XIO-P0", "XIO-P3")
+motor = Motor(11, 12)
 
 application = tornado.web.Application([
     (r'/ws', WSHandler),
